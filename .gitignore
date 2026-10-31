@@ -1,0 +1,12 @@
+# Local Claude Code settings
+.claude/settings.local.json
+
+# Vercel
+.vercel
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Machine-specific preview config (absolute path)
+.claude/launch.json

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code desktop – UI interaction design system (draft)</title>
+<style>
+  :root {
+    --bg: #faf9f6; --surface: #ffffff; --surface-2: #f3f1ec; --text: #1f1e1c; --text-2: #5f5e5a; --muted: #888780;
+    --border: rgba(31,30,28,.12); --border-strong: rgba(31,30,28,.24); --accent: #185fa5; --accent-bg: #e6f1fb;
+    --clay: #c96442; --clay-bg: #faece7; --ok: #3b6d11; --ok-bg: #eaf3de; --warn: #854f0b; --warn-bg: #faeeda;
+    --radius: 8px; --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+    --sans: system-ui, "Segoe UI", Roboto, sans-serif; --serif: Georgia, "Times New Roman", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1d1d1b; --surface: #262624; --surface-2: #30302d; --text: #eceae4; --text-2: #b4b2a9; --muted: #888780;
+      --border: rgba(255,255,255,.12); --border-strong: rgba(255,255,255,.24); --accent: #85b7eb; --accent-bg: #0c447c;
+      --clay: #f0997b; --clay-bg: #4a1b0c; --ok: #97c459; --ok-bg: #173404; --warn: #ef9f27; --warn-bg: #412402; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 var(--sans); }
+  a { color: var(--accent); }
+  .layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); min-height: 100vh; }
+  nav { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 24px 16px; border-right: 1px solid var(--border); }
+  nav h2 { font-size: 12px; font-weight: 500; color: var(--muted); margin: 20px 8px 6px; letter-spacing: .02em; }
+  nav a { display: block; padding: 4px 8px; border-radius: 6px; color: var(--text-2); text-decoration: none; font-size: 14px; }
+  nav a:hover, nav a:focus-visible { background: var(--surface-2); color: var(--text); }
+  main { padding: 40px 48px 120px; max-width: 1080px; }
+  header.intro h1 { font-size: 28px; font-weight: 500; margin: 0 0 8px; }
+  header.intro p { color: var(--text-2); max-width: 70ch; margin: 0 0 8px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; }
+  .group-title { font-size: 13px; font-weight: 500; color: var(--muted); margin: 56px 0 0; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  section.cmp { padding: 32px 0; border-bottom: 1px solid var(--border); scroll-margin-top: 16px; }
+  section.cmp h3 { font-size: 20px; font-weight: 500; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .purpose { color: var(--text-2); margin: 0 0 16px; max-width: 75ch; }
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+  .cols h4 { font-size: 13px; font-weight: 500; color: var(--muted); margin: 0 0 6px; }
+  .cols ul { margin: 0; padding-left: 18px; }
+  .cols li { margin: 2px 0; }
+  table.specs { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.specs td { padding: 5px 8px 5px 0; border-top: 1px solid var(--border); vertical-align: top; }
+  table.specs td:first-child { color: var(--text-2); width: 38%; }
+  code { font: 12.5px var(--mono); background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+  .badge { font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); }
+  .badge.live { background: var(--ok-bg); color: var(--ok); }
+  .badge.sim { background: var(--warn-bg); color: var(--warn); }
+  .badge.app { background: var(--accent-bg); color: var(--accent); }
+  .stage { margin-top: 20px; background: var(--surface-2); border-radius: 12px; padding: 24px; }
+  .stage-label { font-size: 12px; color: var(--muted); margin: 0 0 12px; }
+  .note { font-size: 13px; color: var(--text-2); margin-top: 12px; }
+  /* mock primitives */
+  .m-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; max-width: 560px; }
+  .m-btn { font: inherit; font-size: 13.5px; padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); cursor: pointer; }
+  .m-btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .m-btn:focus-visible, .m-opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .m-chip { font-size: 11.5px; padding: 2px 8px; border-radius: 999px; background: var(--accent-bg); color: var(--accent); }
+  .m-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .m-opt { display: block; width: 100%; text-align: left; font: inherit; padding: 10px 12px; margin: 6px 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); cursor: pointer; }
+  .m-opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-bg); }
+  .m-opt small { display: block; color: var(--text-2); }
+  .m-prev { font: 12px/1.5 var(--mono); white-space: pre; background: var(--surface-2); border-radius: var(--radius); padding: 10px; margin: 0; min-height: 100px; }
+  .m-code { font: 13px var(--mono); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .m-task { display: flex; gap: 10px; align-items: center; padding: 4px 0; font-size: 14px; }
+  .m-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--border-strong); flex: none; }
+  .m-dot.done { background: var(--ok); border-color: var(--ok); }
+  .m-dot.now { border-color: var(--accent); border-top-color: transparent; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .m-dot.now { animation: none; border-top-color: var(--accent); } }
+  .m-divider { display: flex; align-items: center; gap: 12px; color: var(--text-2); font-size: 13px; }
+  .m-divider::before, .m-divider::after { content: ""; flex: 1; height: 1px; background: var(--border-strong); }
+  .m-pane { display: grid; grid-template-columns: 1.2fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface); min-height: 180px; }
+  .m-pane > div { padding: 12px; font-size: 13px; }
+  .m-pane > div + div { border-left: 1px solid var(--border); background: var(--bg); }
+  .m-tabs { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+  .m-tabs span { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--surface-2); color: var(--text-2); }
+  .m-tabs span.on { background: var(--text); color: var(--bg); }
+  .add { color: var(--ok); } .del { color: #a32d2d; }
+  .m-term { font: 12.5px/1.5 var(--mono); background: #1d1d1b; color: #d3d1c7; border-radius: var(--radius); padding: 10px 12px; }
+  .m-serif { font-family: var(--serif); }
+  .m-pending { border: 1px dashed var(--border-strong); border-radius: var(--radius); padding: 8px 12px; color: var(--muted); font-size: 13px; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } nav { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--border); } .cols { grid-template-columns: 1fr; } main { padding: 24px 20px 80px; } .m-pane { grid-template-columns: 1fr; } .m-pane > div + div { border-left: 0; border-top: 1px solid var(--border); } }
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav aria-label="Components" id="nav"></nav>
+  <main>
+    <header class="intro">
+      <h1>Claude Code desktop – UI interaction design system</h1>
+      <p>Every interface element Claude can show you in the desktop app's Code tab: what it's for, what you can do with it, the limits it must respect, and a demo.</p>
+      <p><strong>Where the specs come from:</strong> verified against Claude's own tool definitions in a session on 31 Oct 2026 (limits, fields, allowed values). <strong>The demos</strong> are simulations: they show structure and behaviour, not exact pixels. Elements marked "live" were also shown for real in that session's chat.</p>
+      <div class="legend">
+        <span class="badge live">Live demo in chat</span>
+        <span class="badge sim">Simulated here only</span>
+        <span class="badge app">Owned by the app, not Claude</span>
+      </div>
+      <p class="note">Unofficial. Not affiliated with or endorsed by Anthropic.</p>
+    </header>
+    <div id="content"></div>
+  </main>
+</div>
+
+<script>
+const C = [
+/* ---------------- In the chat stream ---------------- */
+{ g: "In the chat stream", id: "markdown", name: "Markdown message", tool: "plain response text", tag: "live",
+  purpose: "The default surface: everything Claude writes outside a tool call. GitHub-flavoured markdown, rendered in the conversation.",
+  can: ["Read headings, lists, tables, quotes and code blocks", "Click a file link to open it in the Files pane (at a line if given)", "Click a single-line bash block's Run button", "Click Terminal-tab and session links to jump to them", "Copy any code block"],
+  specs: [["Syntax", "GitHub-flavoured markdown"], ["File links", "Path relative to the working directory, optional <code>:line</code>"], ["Run button", "Only single-line blocks tagged <code>bash</code>; one command per block"], ["Terminal link", "<code>[title](#terminal/&lt;tab_id&gt;)</code>"], ["Session link", "<code>[title](#local_&lt;id&gt;)</code>"], ["Not supported", "Raw HTML, embedded media, colours"]],
+  demo: `<div class="m-card"><p style="margin:0 0 8px">The fix is in <a href="#">src/app/Header.tsx:42</a>. To check it:</p>
+    <div class="m-code"><span>npm.cmd run dev</span><button class="m-btn" type="button">Run</button></div></div>` },
+
+{ g: "In the chat stream", id: "question", name: "Question card", tool: "AskUserQuestion", tag: "live",
+  purpose: "Structured choice when a decision is really yours. Faster and lower-load than typing an answer: recognition over recall.",
+  can: ["Pick one option, or several when multi-select is on", "Focus an option to see its preview (mockup, code, comparison)", "Choose \"Other\" and type a free answer", "Add notes to your selection"],
+  specs: [["Questions per card", "1–4"], ["Options per question", "2–4, plus an automatic \"Other\""], ["Header chip", "≤ 12 characters"], ["Option label", "1–5 words, plus a description"], ["Recommended option", "First in the list, label ends \"(Recommended)\""], ["Multi-select", "<code>multiSelect: true</code>"], ["Preview", "Optional per option, shown on focus"], ["Blocking", "Claude waits for your answer"]],
+  demo: `<div class="m-card" id="q-demo"><div class="m-row" style="margin-bottom:8px"><span class="m-chip">Layout</span><strong style="font-weight:500">Which navigation pattern?</strong></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div>
+      <button class="m-opt" type="button" aria-pressed="true" data-p="┌────┬──────────┐\n│ ≡  │ content  │\n│ ≡  │          │\n│ ≡  │          │\n└────┴──────────┘">Sidebar (Recommended)<small>Persistent, scannable</small></button>
+      <button class="m-opt" type="button" aria-pressed="false" data-p="┌───────────────┐\n│ ≡ ≡ ≡ ≡       │\n├───────────────┤\n│ content       │\n└───────────────┘">Top tabs<small>More room for content</small></button>
+      <button class="m-opt" type="button" aria-pressed="false" data-p="(free text field)">Other<small>Type your own answer</small></button>
+    </div><pre class="m-prev" aria-live="polite"></pre></div></div>` },
+
+{ g: "In the chat stream", id: "widget", name: "Inline widget", tool: "show_widget (Visualize)", tag: "live",
+  purpose: "A visual that renders inside the chat: SVG diagrams, charts, mockups, or interactive HTML (sliders, calculators, small dashboards). For anything better seen than read.",
+  can: ["Interact: sliders, toggles, inputs, hover", "Click a button that sends a message to Claude for you (sendPrompt)", "Open links through the app's confirmation dialog", "Download it (the title is the filename)"],
+  specs: [["Modes", "SVG (starts with <code>&lt;svg</code>) or HTML fragment"], ["Width", "680 px container; height fits the content"], ["Loading messages", "1–4, ~5 words each"], ["Title", "snake_case, also the download filename"], ["External code", "Only cdnjs, esm.sh, jsdelivr, unpkg, Google Fonts"], ["Not allowed", "position: fixed, fullscreen, nested scroll, gradients, shadows"], ["Theming", "CSS variables, light and dark mandatory"], ["Back-channel", "<code>sendPrompt(text)</code>"]],
+  demo: `<div class="m-card"><div class="m-row"><label for="w-r" style="font-size:13px;color:var(--text-2)">Items on screen</label><input id="w-r" type="range" min="1" max="12" value="4" step="1" style="flex:1"><strong id="w-o" style="font-weight:500;min-width:2ch">4</strong></div>
+    <p id="w-t" style="font-size:13px;color:var(--text-2);margin:8px 0 0"></p></div>` },
+
+{ g: "In the chat stream", id: "task-card", name: "New task card", tool: "start_session (own_initiative)", tag: "live",
+  purpose: "Claude proposes work it noticed, as its own session. Nothing runs until you start it, so a good idea doesn't derail the current task.",
+  can: ["Start it with one click (or tell Claude \"start it\")", "Ignore it: it expires after a week", "Open the session it creates from its row"],
+  specs: [["Title", "< 60 characters"], ["Brief", "Required: task, files, what done looks like"], ["Context", "fresh (brief only) or fork (whole conversation)"], ["Per turn", "≤ 3 cards"], ["Lifetime", "7 days if not started"], ["Options", "Model, effort (≤ current), worktree, place"]],
+  demo: `<div class="m-card"><div class="m-row" style="justify-content:space-between"><div><div style="font-size:12px;color:var(--muted)">New task</div><strong style="font-weight:500">Publish the UI design system to Vercel</strong></div><button class="m-btn primary" type="button">Start</button></div></div>` },
+
+{ g: "In the chat stream", id: "offer", name: "Offer card", tool: "start_session (offer)", tag: "sim",
+  purpose: "When you ask for something unrelated to the current session, Claude asks where it should run before anything happens.",
+  can: ["Choose New session (clean context, saves usage)", "Choose Do it here (keeps context)"],
+  specs: [["Content", "Title only (your own message is the brief)"], ["Blocking", "Claude waits for your choice"], ["Buttons", "Fixed: New session · Do it here"]],
+  demo: `<div class="m-card"><strong style="font-weight:500">Draft the Q4 accessibility report</strong><p style="margin:4px 0 12px;font-size:13px;color:var(--text-2)">This looks like a separate task.</p><div class="m-row"><button class="m-btn primary" type="button">New session</button><button class="m-btn" type="button">Do it here</button></div></div>` },
+
+{ g: "In the chat stream", id: "handoff", name: "Hand-off", tool: "hand_off_to_session", tag: "sim",
+  purpose: "You change topic mid-task: Claude moves the unfinished task, with its remaining plan, into its own session and answers your new message.",
+  can: ["Open the handed-off session from its row", "Say \"keep going here\" to prevent it"],
+  specs: [["Title", "< 60 characters"], ["Payload", "Fork of the conversation + remaining plan"], ["In a worktree", "Commits first; the new session starts from the branch tip"]],
+  demo: `<div class="m-card"><div class="m-row"><span class="m-dot now" aria-hidden="true"></span><span><strong style="font-weight:500">Resume – fix print layout</strong> <span style="color:var(--text-2);font-size:13px">moved to its own session, working</span></span></div></div>` },
+
+{ g: "In the chat stream", id: "chapter", name: "Chapter divider and contents", tool: "mark_chapter", tag: "live",
+  purpose: "Splits a long session into phases. Gives you a floating table of contents to jump between them: chunking for long transcripts.",
+  can: ["Jump to a chapter from the floating contents", "Hover a chapter to read its one-line summary"],
+  specs: [["Title", "Noun phrase, < 40 characters"], ["Summary", "Optional, one line, shown on hover"], ["Frequency", "~3–8 per session, never at the very start"]],
+  demo: `<div class="m-divider">Catalog build</div>` },
+
+{ g: "In the chat stream", id: "branch", name: "Branch proposal card", tool: "propose_branch", tag: "sim",
+  purpose: "In a Git repository, before the first edit, Claude proposes a branch name so work never lands on the default branch by accident.",
+  can: ["Accept the name", "Edit it", "Decline and stay on the current branch"],
+  specs: [["When", "Once, right before the first file edit in a repo"], ["Skipped", "When you already named a branch, or for throwaway work"]],
+  demo: `<div class="m-card"><div style="font-size:13px;color:var(--text-2)">Create a branch for this work?</div><div class="m-row" style="margin-top:8px"><code>marc/print-layout-fix</code><button class="m-btn primary" type="button">Create</button><button class="m-btn" type="button">Stay on main</button></div></div>` },
+
+{ g: "In the chat stream", id: "folder", name: "Folder picker", tool: "request_directory · change_directory", tag: "sim",
+  purpose: "Moves the session to a project folder, or adds a second folder. You approve the exact path.",
+  can: ["Pick or create a folder in the system dialog", "Approve or refuse the folder Claude named"],
+  specs: [["change_directory", "Moves the session at the end of the turn"], ["request_directory", "Adds a folder, or opens the picker with no path"], ["Approval", "Always yours (except bypass or trusted auto mode)"]],
+  demo: `<div class="m-card"><div style="font-size:13px;color:var(--text-2)">Allow access to this folder?</div><code style="display:inline-block;margin:6px 0 10px">C:\\Users\\…\\Projects\\resume</code><div class="m-row"><button class="m-btn primary" type="button">Allow</button><button class="m-btn" type="button">Choose another</button></div></div>` },
+
+{ g: "In the chat stream", id: "permission", name: "Permission prompt", tool: "the app (not Claude)", tag: "app",
+  purpose: "The app asks before a tool runs, according to your permission mode. Claude can't design, word or suppress it.",
+  can: ["Allow once, allow always, or deny", "Change the mode in the app (default, accept edits, plan, auto, bypass)"],
+  specs: [["Owner", "The app's permission system and your settings"], ["Denied call", "Claude must adjust, not retry the same call"]],
+  demo: `<div class="m-card"><div style="font-size:13px;color:var(--text-2)">Claude wants to run</div><code style="display:inline-block;margin:6px 0 10px">git push origin main</code><div class="m-row"><button class="m-btn primary" type="button">Allow once</button><button class="m-btn" type="button">Always allow</button><button class="m-btn" type="button">Deny</button></div></div>` },
+
+/* ---------------- Under the latest message ---------------- */
+{ g: "Under the latest message", id: "tasklist", name: "Task list", tool: "update_plan", tag: "live",
+  purpose: "A pinned, live checklist of what Claude is doing. You follow progress at a glance instead of reading every message.",
+  can: ["See the step in progress and what's left", "Interrupt with a correction: the list is rewritten", "See a delegated session's live state on its step"],
+  specs: [["Steps", "1–12, short imperative, ≤ ~7 words"], ["Status", "pending · in_progress · completed"], ["Rule", "Exactly one in progress while working"], ["Scope", "first_task · continuation · new_task"], ["Per step", "Optional linked session name"]],
+  demo: `<div class="m-card"><div class="m-task"><span class="m-dot done" aria-hidden="true"></span>Add Design System task to hub</div><div class="m-task"><span class="m-dot done" aria-hidden="true"></span>Collect exact specs</div><div class="m-task"><span class="m-dot now" aria-hidden="true"></span><strong style="font-weight:500">Build catalog page with demos</strong></div><div class="m-task" style="color:var(--text-2)"><span class="m-dot" aria-hidden="true"></span>Preview in browser pane</div></div>` },
+
+{ g: "Under the latest message", id: "nextstep", name: "Next-step box", tool: "wrap_up", tag: "live",
+  purpose: "The end of every working turn: what's now true, what isn't verified, and the one decision waiting on you. The first sentence also becomes the session's status in the sidebar.",
+  can: ["Read the recap without scrolling the transcript", "Answer with one click (reply button)", "Run an app action: Commit, Create PR, Merge, Archive…"],
+  specs: [["Recap", "2–3 sentences, ≤ 300 characters"], ["Question", "One decision, ≤ 100 characters, optional"], ["Buttons", "1–2; first = Claude's recommendation"], ["Reply label", "1–3 words, ≤ 24 characters"], ["App actions", "commit · create_pr · merge · fix_ci · address_comments · resolve_conflicts · verify · archive · new_session"], ["Blocked flag", "Marks the session as waiting on you"]],
+  demo: `<div class="m-card"><p style="margin:0 0 10px;font-size:14px">Catalog page built with 19 components and demos. Not published; the Vercel step is in task P14.</p><div style="font-size:14px;margin-bottom:8px"><strong style="font-weight:500">Move the files to a folder you keep?</strong></div><div class="m-row"><button class="m-btn primary" type="button">Yes, pick a folder</button><button class="m-btn" type="button">Not now</button></div></div>` },
+
+{ g: "Under the latest message", id: "plan", name: "Plan approval", tool: "EnterPlanMode · ExitPlanMode", tag: "sim",
+  purpose: "For wide or risky changes: Claude researches read-only, writes a plan, and nothing is edited until you approve it.",
+  can: ["Approve and let Claude proceed", "Reject or ask for changes", "Open the plan in the Plan pane"],
+  specs: [["During plan mode", "Read-only tools only"], ["Output", "A plan document shown for approval"], ["After approval", "Independent steps may be offered as parallel sessions"]],
+  demo: `<div class="m-card"><div style="font-size:12px;color:var(--muted)">Plan</div><ol style="margin:6px 0 12px;padding-left:20px;font-size:14px"><li>Move catalog into a Next.js repo</li><li>Add live screenshots per component</li><li>Deploy preview to Vercel</li></ol><div class="m-row"><button class="m-btn primary" type="button">Approve plan</button><button class="m-btn" type="button">Keep planning</button></div></div>` },
+
+/* ---------------- Panes and window ---------------- */
+{ g: "Panes and window", id: "panes", name: "Side panes", tool: "show_pane", tag: "live",
+  purpose: "Claude opens the right pane beside the chat instead of describing where to look. Show, don't tell.",
+  can: ["Review the diff (all branch changes, uncommitted, or one commit)", "Read a file at the exact line", "See the Terminal, PR, background tasks, plan, browser preview or artifacts"],
+  specs: [["Panes", "diff · file · terminal · pr · tasks · plan · preview · artifact"], ["file", "<code>path</code> + <code>line</code>, inside the session's folders"], ["diff", "<code>diff_scope</code>: all · uncommitted · commit SHA"], ["Focus", "Never steals focus from another session"]],
+  demo: `<div class="m-pane"><div><div style="color:var(--text-2);margin-bottom:6px">Chat</div>I changed the header spacing. The diff is open on the right.</div><div><div class="m-tabs"><span class="on">Diff</span><span>Files</span><span>Terminal</span><span>Preview</span></div><code style="background:none;padding:0">Header.tsx</code><div class="del" style="font-family:var(--mono);font-size:12px">- padding: 24px;</div><div class="add" style="font-family:var(--mono);font-size:12px">+ padding: var(--pad-lg);</div></div></div>` },
+
+{ g: "Panes and window", id: "browser", name: "Browser pane", tool: "Claude_Browser · preview_start", tag: "live",
+  purpose: "A real browser inside the app, separate from your Chrome. Claude previews your dev server, reads docs, or checks a deployed page, and you can watch or take over.",
+  can: ["Watch Claude navigate and test", "Take over and click yourself", "Approve sites before Claude visits them"],
+  specs: [["Dev servers", "From <code>.claude/launch.json</code> (command + port)"], ["Viewport presets", "mobile 375×812 · tablet 768×1024 · desktop"], ["Colour scheme", "Light / dark emulation"], ["Reading", "Accessibility tree or page text first, screenshots when needed"], ["Sign-ins", "Persist; treated as yours"]],
+  demo: `<div class="m-card" style="max-width:none;padding:0;overflow:hidden"><div class="m-row" style="padding:8px 12px;border-bottom:1px solid var(--border)"><span class="m-tabs" style="margin:0"><span class="on">localhost:3000</span><span>docs.claude.com</span></span><span style="margin-left:auto;font-size:12px;color:var(--muted)">375 × 812</span></div><div style="padding:24px;text-align:center;color:var(--text-2);font-size:13px">your app renders here</div></div>` },
+
+{ g: "Panes and window", id: "terminal", name: "Terminal tabs", tool: "open_terminal_tab · run_in_terminal · read_terminal", tag: "sim",
+  purpose: "Your own shell tabs beside the chat. Claude can open one for you, run a command where you can see it, or read what you ran.",
+  can: ["Type your own commands", "Ask \"did it pass?\": Claude reads the tab", "Stop or close a tab Claude started"],
+  specs: [["Shell", "Your login shell (PowerShell on Windows)"], ["cwd", "Session folder or a granted folder"], ["read_terminal", "Up to 1000 trailing lines; can wait for new output"]],
+  demo: `<div class="m-term">PS C:\\Projects\\resume&gt; npm.cmd run build<br>✓ compiled in 2.1s<br>PS C:\\Projects\\resume&gt; <span style="opacity:.6">▌</span></div>` },
+
+{ g: "Panes and window", id: "window", name: "Split view and sidebar", tool: "open_session_in · ccd_sidebar", tag: "sim",
+  purpose: "Arranges sessions: side by side, pinned with a reason, grouped by project, marked done or unread. Keeps parallel work visible without tab-juggling.",
+  can: ["Drag a session to split the window", "Pin, group, rename groups, mark unread or completed", "Collapse the sidebar"],
+  specs: [["Split", "Sessions Claude started can be opened in split view for you"], ["Sidebar", "Groups, sections, pins, unread, completed, view mode"]],
+  demo: `<div class="m-pane" style="grid-template-columns:1fr 1fr"><div><div style="font-size:12px;color:var(--muted)">Pinned</div>Resume – print fix – waiting on review</div><div><div style="font-size:12px;color:var(--muted)">Split</div>Design system – catalog – done</div></div>` },
+
+{ g: "Panes and window", id: "docs", name: "Claude Docs", tool: "Docs connector (batch · update)", tag: "sim",
+  purpose: "A living document that fills in while you watch, section by section, with comment threads Claude can answer. For writing meant to be kept, shared or exported.",
+  can: ["Watch sections fill from placeholders", "Comment on a passage and summon Claude there", "Export to Word, PDF, Markdown or Google Docs", "Share it"],
+  specs: [["Skeleton first", "Title, byline, one pending block per section"], ["Blocks", "Text, date, mention, charts, diagrams, tabs"], ["Comments", "Threaded; Claude replies inside the thread"]],
+  demo: `<div class="m-card"><h4 class="m-serif" style="margin:0 0 4px;font-size:18px;font-weight:500">Q4 UX research summary</h4><div style="font-size:12px;color:var(--muted);margin-bottom:10px">31 Oct 2026 · Marc</div><p class="m-serif" style="margin:0 0 8px;font-size:14px">Goals: three outcomes this quarter commits to…</p><div class="m-pending">Writing: Findings</div></div>` },
+
+{ g: "Panes and window", id: "mods", name: "Mods", tool: "plugin-authoring skill", tag: "sim",
+  purpose: "Extends the interface itself: a panel that stays beside the chat and updates, a band, a status line, toasts, slash commands, or hooks on tool calls.",
+  can: ["Ask Claude to build a custom panel (for example a usage meter)", "Add a slash command for a routine", "Add a hook that checks or blocks tool calls"],
+  specs: [["Surfaces", "Panel · band · status line · toast · slash command · hook"], ["Scope", "Your own app; changes Claude's UI or behaviour"]],
+  demo: `<div class="m-row" style="gap:12px;align-items:stretch"><div class="m-card" style="flex:1"><div style="font-size:12px;color:var(--muted)">Panel</div>Usage today: 38%</div><div class="m-card" style="flex:1;background:var(--text);color:var(--bg)">Toast: tests passed</div></div>` }
+];
+
+const nav = document.getElementById("nav"), content = document.getElementById("content");
+const tagText = { live: "Live demo in chat", sim: "Simulated here only", app: "Owned by the app" };
+let group = "";
+nav.insertAdjacentHTML("beforeend", `<a href="#top" style="font-weight:500;color:var(--text)">Overview</a>`);
+C.forEach(c => {
+  if (c.g !== group) {
+    group = c.g;
+    nav.insertAdjacentHTML("beforeend", `<h2>${group}</h2>`);
+    content.insertAdjacentHTML("beforeend", `<h2 class="group-title">${group}</h2>`);
+  }
+  nav.insertAdjacentHTML("beforeend", `<a href="#${c.id}">${c.name}</a>`);
+  content.insertAdjacentHTML("beforeend", `
+  <section class="cmp" id="${c.id}" aria-labelledby="${c.id}-h">
+    <h3 id="${c.id}-h">${c.name} <span class="badge ${c.tag}">${tagText[c.tag]}</span></h3>
+    <p class="purpose">${c.purpose} <span style="color:var(--muted)">Source: <code>${c.tool}</code></span></p>
+    <div class="cols">
+      <div><h4>What you can do</h4><ul>${c.can.map(x => `<li>${x}</li>`).join("")}</ul></div>
+      <div><h4>Technical specs</h4><table class="specs"><tbody>${c.specs.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("")}</tbody></table></div>
+    </div>
+    <div class="stage"><p class="stage-label">Demo (simulation)</p>${c.demo}</div>
+  </section>`);
+});
+document.querySelector("header.intro").id = "top";
+
+/* demo behaviour */
+const q = document.getElementById("q-demo");
+if (q) {
+  const prev = q.querySelector(".m-prev"), opts = q.querySelectorAll(".m-opt");
+  const show = o => { opts.forEach(x => x.setAttribute("aria-pressed", x === o)); prev.textContent = o.dataset.p; };
+  opts.forEach(o => { o.addEventListener("click", () => show(o)); o.addEventListener("focus", () => show(o)); });
+  show(opts[0]);
+}
+const r = document.getElementById("w-r"), o = document.getElementById("w-o"), t = document.getElementById("w-t");
+if (r) {
+  const upd = () => { const n = +r.value; o.textContent = n; t.textContent = n <= 4 ? "Within working-memory range: easy to scan." : n <= 7 ? "Getting dense: consider grouping." : "Too many at once: chunk or progressively disclose."; };
+  r.addEventListener("input", upd); upd();
+}
+</script>
+</body>
+</html>
