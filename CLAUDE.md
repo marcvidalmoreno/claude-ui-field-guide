@@ -1,4 +1,4 @@
-# Claude UI design system – project context
+# Claude UI field guide – project context
 
 ## Origin (Marc, 2026-11-07)
 

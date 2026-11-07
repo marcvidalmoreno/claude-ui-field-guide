@@ -1,6 +1,6 @@
-# Claude Code desktop – UI interaction design system
+# Claude UI field guide
 
-A design-system-style catalog of every interface element Claude can show in the Claude desktop app's Code tab: question cards, task list, next-step box, inline widgets, session cards, panes and more. For each element: what it's for, what you can do with it, its technical specs and a demo.
+A field guide to every interface element Claude can show in the Claude desktop app's Code tab: question cards, task list, next-step box, inline widgets, session cards, panes and more. For each element: what it's for, what you can do with it, its technical specs and a demo.
 
 > Unofficial. Not affiliated with or endorsed by Anthropic. "Claude" is a trademark of Anthropic.
 

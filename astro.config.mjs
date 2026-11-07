@@ -5,7 +5,7 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'Claude Code desktop UI',
+			title: 'Claude UI field guide',
 			description:
 				'Every interface element Claude can show in the Claude desktop app’s Code tab: purpose, actions, specs and a demo.',
 			customCss: ['./src/styles/mocks.css'],
