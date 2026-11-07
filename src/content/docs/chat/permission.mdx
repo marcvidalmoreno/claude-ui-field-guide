@@ -1,0 +1,23 @@
+---
+title: Permission prompt
+description: 'The app asks before a tool runs, according to your permission mode. Claude can''t design, word or suppress it.'
+sidebar: { order: 10 }
+source: the app (not Claude)
+tag: app
+can:
+  - Allow or deny the call
+  - Change the mode in the app (default, accept edits, plan, auto, bypass permissions)
+specs:
+  - ['Owner', 'The app''s permission system and your settings']
+  - ['Denied call', 'Claude must adjust, not retry the same call']
+  - ['Not verified', 'The prompt''s exact wording and buttons: Claude never sees it']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <div class="m-hint">Claude wants to run</div>
+  <div class="m-gap"><code>git push origin main</code></div>
+  <div class="m-row"><button class="m-btn primary" type="button">Allow once</button><button class="m-btn" type="button">Always allow</button><button class="m-btn" type="button">Deny</button></div>
+</div>
+</Demo>

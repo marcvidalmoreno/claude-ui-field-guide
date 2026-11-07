@@ -1,0 +1,25 @@
+---
+title: Terminal tabs
+description: 'Your own shell tabs beside the chat. Claude can open one for you, run a command where you can see it, or read what you ran.'
+sidebar: { order: 3 }
+source: open_terminal_tab · run_in_terminal · read_terminal
+tag: sim
+can:
+  - Type your own commands
+  - 'Ask "did it pass?": Claude reads the tab'
+  - 'Let Claude stop or close a tab it started (never one you opened or typed in)'
+specs:
+  - ['Shell', 'Your login shell, or PowerShell on Windows']
+  - ['run_in_terminal', 'One literal command line; it keeps running after Claude''s turn']
+  - ['cwd', 'Session folder or a granted folder']
+  - ['read_terminal', 'Up to 1000 trailing lines; can wait for new output']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-term">
+  <div>PS C:\Projects\resume&gt; npm.cmd run build</div>
+  <div>✓ compiled in 2.1s</div>
+  <div>PS C:\Projects\resume&gt; <span class="caret">▌</span></div>
+</div>
+</Demo>

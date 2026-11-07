@@ -1,0 +1,40 @@
+---
+title: Claude Code desktop – UI interaction design system
+description: 'Every interface element Claude can show you in the desktop app’s Code tab: what it’s for, what you can do with it, the limits it must respect, and a demo.'
+---
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Every interface element Claude can show you in the desktop app’s Code tab: what it’s for, what you can do with it, the limits it must respect, and a demo.
+
+**Where the specs come from:** Claude’s own tool definitions (limits, fields, allowed values), first read in a session on 31 Oct 2026 and checked again line by line on 7 Nov 2026. Anything that doesn’t come from a definition was removed or is marked “Not verified” on its page. **The demos** are simulations: they show structure and behaviour, not exact pixels or button labels. Elements marked “live” were shown for real in the 31 Oct session’s chat (not re-checked element by element). The app changes often, so limits may drift.
+
+How this catalog came about, and how Marc and Claude work together: [About us](/about/).
+
+<Badge text="Live demo in chat" variant="success" /> <Badge text="Simulated here only" variant="caution" /> <Badge text="Owned by the app" variant="note" />
+
+## Why this exists
+
+It started with a small annoyance: Claude answered almost only in text, so every reply had to be typed, even a plain “y” or “n”. A yes/no question could have been two buttons, the recommended one more prominent. File names came without links. Commands had to be copied into a terminal somewhere else. Looking for better options turned up a whole set of buttons, cards, panes and links Claude can use instead, and this catalog collects them.
+
+The idea behind it: **technology out of sight**. An AI tool should spend its power on saving people steps and keep the machinery invisible.
+
+## The principle: reply cost
+
+When Claude needs something from you, it should use the control that costs you the least effort and attention. From cheapest to most expensive:
+
+1. **Nothing.** Claude decides (when the choice is low-risk and reversible) and says what it assumed.
+2. **One click.** A button that answers or acts: [next-step box](/under-message/nextstep/), [question card](/chat/question/), [plan approval](/under-message/plan/).
+3. **One click to open.** A link to the file, [pane](/panes/panes/), session or page.
+4. **A Run button** on a command, or a [terminal tab](/panes/terminal/) Claude runs it in.
+5. **A block to copy** and paste somewhere else.
+6. **A typed reply**, only for open questions.
+
+## Groups
+
+<CardGrid>
+  <LinkCard title="In the chat stream" description="Messages, question cards, widgets, session cards, prompts." href="/chat/markdown/" />
+  <LinkCard title="Under the latest message" description="Task list, next-step box, plan approval." href="/under-message/tasklist/" />
+  <LinkCard title="Panes and window" description="Side panes, browser, terminal, sidebar, docs, mods." href="/panes/panes/" />
+</CardGrid>
+
+Unofficial. Not affiliated with or endorsed by Anthropic. “Claude” is a trademark of Anthropic.

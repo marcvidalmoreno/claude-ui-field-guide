@@ -1,0 +1,21 @@
+---
+title: Hand-off
+description: 'You change topic mid-task: Claude moves the unfinished task, with its remaining plan, into its own session and answers your new message.'
+sidebar: { order: 6 }
+source: hand_off_to_session
+tag: sim
+can:
+  - Open the handed-off session from its row
+  - Say "keep going here" to prevent it
+specs:
+  - ['Title', '< 60 characters']
+  - ['Payload', 'Fork of the conversation + remaining plan']
+  - ['In a worktree', 'Commits first; the new session starts from the branch tip']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <div class="m-row"><span class="m-dot now" aria-hidden="true"></span><span><strong class="m-strong">Resume – fix print layout</strong> <span class="m-hint">moved to its own session, working</span></span></div>
+</div>
+</Demo>

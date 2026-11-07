@@ -1,0 +1,29 @@
+---
+title: Side panes
+description: 'Claude opens the right pane beside the chat instead of describing where to look. Show, don''t tell.'
+sidebar: { order: 1 }
+source: show_pane
+tag: live
+can:
+  - Review the diff (all branch changes, uncommitted, or one commit)
+  - Read a file at the exact line
+  - See the Terminal, PR, background tasks, plan, browser preview or artifacts
+specs:
+  - ['Panes', 'diff · file · terminal · pr · tasks · plan · preview · artifact']
+  - ['file', '`path` + `line`, inside the session''s folders']
+  - ['diff', '`diff_scope`: all · uncommitted · commit SHA']
+  - ['Focus', 'Never steals focus from another session']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-pane">
+  <div><div class="m-hint m-gap-sm">Chat</div>I changed the header spacing. The diff is open on the right.</div>
+  <div>
+    <div class="m-tabs"><span class="on">Diff</span><span>Files</span><span>Terminal</span><span>Preview</span></div>
+    <div class="m-diff">Header.tsx</div>
+    <div class="m-diff del">- padding: 24px;</div>
+    <div class="m-diff add">{'+ padding: var(--pad-lg);'}</div>
+  </div>
+</div>
+</Demo>

@@ -1,0 +1,23 @@
+---
+title: Split view and sidebar
+description: 'Arranges sessions: side by side, pinned, grouped by project, marked done or unread. Keeps parallel work visible without tab-juggling.'
+sidebar: { order: 4 }
+source: open_session_in · ccd_sidebar
+tag: sim
+can:
+  - Drag a session to split the window
+  - Pin, group, rename groups, mark unread or completed
+  - Collapse the sidebar
+specs:
+  - ['Split', 'Sessions Claude started can be opened in split view for you']
+  - ['Sidebar', 'Groups, sections, pins, unread, completed, view mode']
+  - ['Pinned', 'Shown above every group and kept out of automatic archiving']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-pane even">
+  <div><div class="m-kicker">Pinned</div>Resume – print fix – waiting on review</div>
+  <div><div class="m-kicker">Split</div>Design system – catalog – done</div>
+</div>
+</Demo>

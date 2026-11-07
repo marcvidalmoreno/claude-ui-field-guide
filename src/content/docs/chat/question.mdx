@@ -1,0 +1,27 @@
+---
+title: Question card
+description: 'Structured choice when a decision is really yours. Faster and lower-load than typing an answer: recognition over recall.'
+sidebar: { order: 2 }
+source: AskUserQuestion
+tag: live
+can:
+  - Pick one option, or several when multi-select is on
+  - Focus an option to see its preview (mockup, code, comparison)
+  - Choose "Other" and type a free answer
+  - Add notes to your selection
+specs:
+  - ['Questions per card', '1–4']
+  - ['Options per question', '2–4, plus an automatic "Other"']
+  - ['Header chip', '≤ 12 characters']
+  - ['Option label', '1–5 words, plus a description']
+  - ['Recommended option', 'First in the list, label ends "(Recommended)"']
+  - ['Multi-select', '`multiSelect: true`']
+  - ['Preview', 'Optional per option, shown on focus']
+  - ['Blocking', 'Claude waits for your answer']
+---
+import Demo from '../../../components/Demo.astro';
+import QuestionDemo from '../../../components/demos/QuestionDemo.astro';
+
+<Demo>
+  <QuestionDemo />
+</Demo>

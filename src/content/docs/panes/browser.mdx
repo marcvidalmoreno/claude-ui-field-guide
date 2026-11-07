@@ -1,0 +1,25 @@
+---
+title: Browser pane
+description: 'A real browser inside the app, separate from your Chrome. Claude previews your dev server, reads docs, or checks a deployed page, and you can watch or take over.'
+sidebar: { order: 2 }
+source: Claude_Browser · preview_start
+tag: live
+can:
+  - Watch Claude navigate and test
+  - Take over and click yourself
+  - Approve sites before Claude visits them
+specs:
+  - ['Dev servers', 'From `.claude/launch.json` (command + port)']
+  - ['Viewport presets', 'mobile 375×812 · tablet 768×1024 · desktop']
+  - ['Colour scheme', 'Light / dark emulation']
+  - ['Reading', 'Accessibility tree or page text first, screenshots when needed']
+  - ['Sign-ins', 'Persist; treated as yours']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card m-browser">
+  <div class="m-row bar"><span class="m-tabs" style="margin:0"><span class="on">localhost:3000</span><span>docs.claude.com</span></span><span class="m-kicker" style="margin-left:auto">375 × 812</span></div>
+  <div class="viewport">your app renders here</div>
+</div>
+</Demo>

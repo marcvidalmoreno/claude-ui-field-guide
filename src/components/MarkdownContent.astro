@@ -1,0 +1,42 @@
+---
+import Default from '@astrojs/starlight/components/MarkdownContent.astro';
+import { inline } from '../lib/tags';
+
+// Component pages get purpose, actions and specs from frontmatter; the body holds the demo and notes.
+const { description, source, can, specs } = Astro.locals.starlightRoute.entry.data;
+const isComponent = Boolean(specs);
+---
+
+<Default>
+	{
+		isComponent && (
+			<>
+				<p class="purpose">
+					{description} {source && <span class="source">Source: <code>{source}</code></span>}
+				</p>
+				<div class="cols not-content">
+					<div>
+						<h2 class="col-title">What you can do</h2>
+						<ul>
+							{can?.map((item) => <li set:html={inline(item)} />)}
+						</ul>
+					</div>
+					<div>
+						<h2 class="col-title">Technical specs</h2>
+						<table class="specs">
+							<tbody>
+								{specs?.map(([label, value]) => (
+									<tr>
+										<th scope="row">{label}</th>
+										<td set:html={inline(value)} />
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</>
+		)
+	}
+	<slot />
+</Default>

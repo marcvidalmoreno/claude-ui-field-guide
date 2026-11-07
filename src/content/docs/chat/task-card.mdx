@@ -1,0 +1,28 @@
+---
+title: New task card
+description: 'Claude proposes work it noticed, as its own session. Nothing runs until you start it, so a good idea doesn''t derail the current task.'
+sidebar: { order: 4 }
+source: start_session (own_initiative)
+tag: live
+can:
+  - Start it with one click (or tell Claude "start it")
+  - 'Ignore it: it expires after a week'
+  - Open the session it creates from its row
+specs:
+  - ['Title', '< 60 characters']
+  - ['Brief', 'Required: task, files, what done looks like']
+  - ['Context', 'fresh (brief only) or fork (whole conversation)']
+  - ['Per turn', '≤ 3 cards']
+  - ['Lifetime', '7 days if not started']
+  - ['Options', 'Model, effort (≤ current), worktree, place']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <div class="m-row between">
+    <div><div class="m-kicker">New task</div><strong class="m-strong">Publish the UI design system to Vercel</strong></div>
+    <button class="m-btn primary" type="button">Start</button>
+  </div>
+</div>
+</Demo>
