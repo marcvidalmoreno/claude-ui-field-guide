@@ -1,0 +1,26 @@
+---
+title: Claude Docs
+description: 'A living document that fills in while you watch, section by section, with comment threads Claude can answer. For writing meant to be kept, shared or exported.'
+sidebar: { order: 5 }
+source: Docs connector (batch · update)
+tag: sim
+can:
+  - Watch sections fill from placeholders
+  - Comment on a passage and summon Claude there
+  - Export to Word, PDF, Markdown or Google Docs
+  - Share it
+specs:
+  - ['Skeleton first', 'Title, byline, one pending block per section']
+  - ['Content', 'Text, date and mention blocks, charts, diagrams, uploads; several tabs per doc']
+  - ['Comments', 'Threaded; Claude replies inside the thread']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <div class="m-serif m-strong" style="font-size:18px">Q4 UX research summary</div>
+  <div class="m-kicker m-gap-sm">31 Oct 2026 · Marc</div>
+  <p class="m-serif m-gap-sm">Goals: three outcomes this quarter commits to…</p>
+  <div class="m-pending">Writing: Findings</div>
+</div>
+</Demo>

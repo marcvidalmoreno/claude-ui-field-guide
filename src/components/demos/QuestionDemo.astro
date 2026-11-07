@@ -1,0 +1,36 @@
+---
+const options = [
+	{ label: 'Sidebar (Recommended)', hint: 'Persistent, scannable', preview: '┌────┬──────────┐\n│ ≡  │ content  │\n│ ≡  │          │\n│ ≡  │          │\n└────┴──────────┘' },
+	{ label: 'Top tabs', hint: 'More room for content', preview: '┌───────────────┐\n│ ≡ ≡ ≡ ≡       │\n├───────────────┤\n│ content       │\n└───────────────┘' },
+	{ label: 'Other', hint: 'Type your own answer', preview: '(free text field)' },
+];
+---
+
+<div class="m-card" data-question-demo>
+	<div class="m-row m-gap-sm"><span class="m-chip">Layout</span><strong class="m-strong">Which navigation pattern?</strong></div>
+	<div class="m-split">
+		<div>
+			{options.map((o, i) => (
+				<button class="m-opt" type="button" aria-pressed={i === 0 ? 'true' : 'false'} data-preview={o.preview}>
+					{o.label}<small>{o.hint}</small>
+				</button>
+			))}
+		</div>
+		<pre class="m-prev" aria-live="polite">{options[0].preview}</pre>
+	</div>
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-question-demo]').forEach((card) => {
+		const preview = card.querySelector('.m-prev')!;
+		const opts = card.querySelectorAll<HTMLButtonElement>('.m-opt');
+		const show = (o: HTMLButtonElement) => {
+			opts.forEach((x) => x.setAttribute('aria-pressed', String(x === o)));
+			preview.textContent = o.dataset.preview ?? '';
+		};
+		opts.forEach((o) => {
+			o.addEventListener('click', () => show(o));
+			o.addEventListener('focus', () => show(o));
+		});
+	});
+</script>

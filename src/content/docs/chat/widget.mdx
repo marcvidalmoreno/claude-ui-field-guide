@@ -1,0 +1,27 @@
+---
+title: Inline widget
+description: 'A visual that renders inside the chat: SVG diagrams, charts, mockups, or interactive HTML (sliders, calculators, small dashboards). For anything better seen than read.'
+sidebar: { order: 3 }
+source: show_widget (Visualize)
+tag: live
+can:
+  - 'Interact: sliders, toggles, inputs, hover'
+  - Click a button that sends a message to Claude for you (sendPrompt)
+  - Open links through the app's confirmation dialog
+  - Download it (the title is the filename)
+specs:
+  - ['Modes', 'SVG (starts with `<svg`) or HTML fragment']
+  - ['Width', '680 px container; height fits the content']
+  - ['Loading messages', '1–4, ~5 words each']
+  - ['Title', 'snake_case, also the download filename']
+  - ['External code', 'Only cdnjs, esm.sh, jsdelivr, unpkg, Google Fonts']
+  - ['Not allowed', 'position: fixed, fullscreen, nested scroll, gradients, shadows']
+  - ['Theming', 'CSS variables, light and dark mandatory']
+  - ['Back-channel', '`sendPrompt(text)`']
+---
+import Demo from '../../../components/Demo.astro';
+import WidgetDemo from '../../../components/demos/WidgetDemo.astro';
+
+<Demo>
+  <WidgetDemo />
+</Demo>

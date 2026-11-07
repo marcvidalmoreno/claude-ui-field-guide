@@ -1,0 +1,22 @@
+---
+title: Mods
+description: 'Extends the interface itself: a panel that stays beside the chat and updates, a band, a status line, toasts, slash commands, or hooks on tool calls.'
+sidebar: { order: 6 }
+source: plugin-authoring skill
+tag: sim
+can:
+  - Ask Claude to build a custom panel (for example a usage meter)
+  - Add a slash command for a routine
+  - Add a hook that checks or blocks tool calls
+specs:
+  - ['Surfaces', 'Panel · band · status line · toast · slash command · hook']
+  - ['Scope', 'Changes Claude''s own interface or behaviour']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-split">
+  <div class="m-card"><div class="m-kicker">Panel</div>Usage meter</div>
+  <div class="m-card m-toast">Toast: tests passed</div>
+</div>
+</Demo>

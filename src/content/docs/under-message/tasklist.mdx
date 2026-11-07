@@ -1,0 +1,27 @@
+---
+title: Task list
+description: 'A pinned, live checklist of what Claude is doing. You follow progress at a glance instead of reading every message.'
+sidebar: { order: 1 }
+source: update_plan
+tag: live
+can:
+  - See the step in progress and what's left
+  - 'Interrupt with a correction: the list is rewritten'
+  - See a delegated session's live state on its step
+specs:
+  - ['Steps', '1–12, short imperative, ≤ ~7 words']
+  - ['Status', 'pending · in_progress · completed']
+  - ['Rule', 'Exactly one in progress while working']
+  - ['Scope', 'first_task · continuation · new_task']
+  - ['Per step', 'Optional linked session name']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <div class="m-task"><span class="m-dot done" aria-hidden="true"></span>Add Design System task to hub</div>
+  <div class="m-task"><span class="m-dot done" aria-hidden="true"></span>Collect exact specs</div>
+  <div class="m-task"><span class="m-dot now" aria-hidden="true"></span><strong class="m-strong">Build catalog page with demos</strong></div>
+  <div class="m-task todo"><span class="m-dot" aria-hidden="true"></span>Preview in browser pane</div>
+</div>
+</Demo>

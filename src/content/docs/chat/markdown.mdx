@@ -1,0 +1,27 @@
+---
+title: Markdown message
+description: 'The default surface: everything Claude writes outside a tool call. GitHub-flavoured markdown, rendered in the conversation.'
+sidebar: { order: 1 }
+source: plain response text
+tag: live
+can:
+  - Read headings, lists, tables, quotes and code blocks
+  - Click a file link to open it in the Files pane (at a line if given)
+  - Click a single-line bash block's Run button
+  - Click Terminal-tab and session links to jump to them
+specs:
+  - ['Syntax', 'GitHub-flavoured markdown']
+  - ['File links', 'Path relative to the working directory, optional `:line`']
+  - ['Run button', 'Only single-line blocks tagged `bash`; one command per block']
+  - ['Terminal link', '`[title](#terminal/<tab_id>)`']
+  - ['Session link', '`[title](#local_<id>)`']
+  - ['File scope', 'The Files pane opens only files inside the session''s folders']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <p class="m-gap-sm">The fix is in <a href="#">src/app/Header.tsx:42</a>. To check it:</p>
+  <div class="m-code"><span>npm.cmd run dev</span><button class="m-btn" type="button">Run</button></div>
+</div>
+</Demo>

@@ -1,0 +1,23 @@
+---
+title: Folder picker
+description: 'Moves the session to a project folder, or adds a second folder. You approve the exact path.'
+sidebar: { order: 9 }
+source: request_directory · change_directory
+tag: sim
+can:
+  - Pick a folder in the native folder picker
+  - Approve or refuse the folder Claude named
+specs:
+  - ['change_directory', 'Moves the session at the end of the turn']
+  - ['request_directory', 'Adds a folder, or opens the picker with no path']
+  - ['Approval', 'Always yours (except bypass or trusted auto mode)']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <div class="m-hint">Allow access to this folder?</div>
+  <div class="m-gap"><code>C:\Users\…\Projects\resume</code></div>
+  <div class="m-row"><button class="m-btn primary" type="button">Allow</button><button class="m-btn" type="button">Choose another</button></div>
+</div>
+</Demo>

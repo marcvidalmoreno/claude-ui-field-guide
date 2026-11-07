@@ -1,0 +1,22 @@
+---
+title: Branch proposal card
+description: 'In a Git repository, before the first edit, Claude proposes a short branch name for the task, so the work gets its own branch.'
+sidebar: { order: 8 }
+source: propose_branch
+tag: sim
+can:
+  - 'Answer the proposal: Claude follows your answer'
+specs:
+  - ['When', 'Right before the first file edit in a repo']
+  - ['Skipped', 'When you already named a branch, or for a question or a throwaway script']
+  - ['Availability', 'Not in every session (absent in the 7 Nov check, which ran on a feature branch)']
+  - ['Not verified', 'The card''s exact buttons: Claude''s instructions don''t list them']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <div class="m-hint m-gap-sm">Create a branch for this work?</div>
+  <div class="m-row"><code>marc/print-layout-fix</code><button class="m-btn primary" type="button">Create</button><button class="m-btn" type="button">Stay on main</button></div>
+</div>
+</Demo>

@@ -1,0 +1,24 @@
+---
+title: Offer card
+description: 'When you ask for something unrelated to the current session, Claude asks where it should run before anything happens.'
+sidebar: { order: 5 }
+source: start_session (offer)
+tag: sim
+can:
+  - 'Choose New session: the task gets a session of its own'
+  - 'Choose Do it here: Claude carries on in this session, with what it already knows'
+specs:
+  - ['Content', 'Title only; the card shows your own message']
+  - ['After New session', 'Claude sends the brief and the session starts']
+  - ['Blocking', 'Claude waits for your choice']
+  - ['Buttons', 'Fixed: New session · Do it here']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <strong class="m-strong">Draft the Q4 accessibility report</strong>
+  <p class="m-hint m-gap">This looks like a separate task.</p>
+  <div class="m-row"><button class="m-btn primary" type="button">New session</button><button class="m-btn" type="button">Do it here</button></div>
+</div>
+</Demo>

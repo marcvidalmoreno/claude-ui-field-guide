@@ -1,0 +1,10 @@
+---
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+import { Badge } from '@astrojs/starlight/components';
+import { tags } from '../lib/tags';
+
+const { tag } = Astro.locals.starlightRoute.entry.data;
+---
+
+<Default />
+{tag && <Badge text={tags[tag].text} variant={tags[tag].variant} size="medium" />}

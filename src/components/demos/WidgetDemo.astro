@@ -1,0 +1,26 @@
+<div class="m-card" data-widget-demo>
+	<div class="m-row">
+		<label for="w-range" class="m-hint">Items on screen</label>
+		<input id="w-range" type="range" min="1" max="12" value="4" step="1" style="flex:1" />
+		<strong class="m-strong" style="min-width:2ch">4</strong>
+	</div>
+	<p class="m-hint" style="margin-top:8px" aria-live="polite"></p>
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-widget-demo]').forEach((card) => {
+		const range = card.querySelector<HTMLInputElement>('input')!;
+		const out = card.querySelector('strong')!;
+		const text = card.querySelector('p')!;
+		const update = () => {
+			const n = +range.value;
+			out.textContent = String(n);
+			text.textContent =
+				n <= 4 ? 'Within working-memory range: easy to scan.'
+				: n <= 7 ? 'Getting dense: consider grouping.'
+				: 'Too many at once: chunk or progressively disclose.';
+		};
+		range.addEventListener('input', update);
+		update();
+	});
+</script>

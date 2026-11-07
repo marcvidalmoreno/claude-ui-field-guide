@@ -1,0 +1,27 @@
+---
+title: Next-step box
+description: 'The end of every working turn: what''s now true, what isn''t verified, and the one decision waiting on you. The first sentence also becomes the session''s status in the sidebar.'
+sidebar: { order: 2 }
+source: wrap_up
+tag: live
+can:
+  - Read the recap without scrolling the transcript
+  - Answer with one click (reply button)
+  - 'Run an app action: Commit, Create PR, Merge, Archive…'
+specs:
+  - ['Recap', '2–3 sentences, ≤ 300 characters']
+  - ['Question', 'One decision, ≤ 100 characters, optional']
+  - ['Buttons', '1–2; first = Claude''s recommendation']
+  - ['Reply label', '1–3 words, ≤ 24 characters']
+  - ['App actions', 'commit · create_pr · merge · fix_ci · address_comments · resolve_conflicts · verify · archive · new_session']
+  - ['Blocked flag', 'Marks the session as waiting on you']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <p class="m-gap">Catalog page built with 19 components and demos. Not published; the Vercel step is in task P14.</p>
+  <div class="m-gap-sm"><strong class="m-strong">Move the files to a folder you keep?</strong></div>
+  <div class="m-row"><button class="m-btn primary" type="button">Yes, pick a folder</button><button class="m-btn" type="button">Not now</button></div>
+</div>
+</Demo>

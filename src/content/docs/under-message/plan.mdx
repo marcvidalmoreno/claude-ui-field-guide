@@ -1,0 +1,28 @@
+---
+title: Plan approval
+description: 'For wide or risky changes: Claude explores the code, writes a plan, and waits for your approval before writing code.'
+sidebar: { order: 3 }
+source: EnterPlanMode · ExitPlanMode
+tag: sim
+can:
+  - Agree, or not, to Claude entering plan mode
+  - Approve the plan and let Claude proceed
+  - Open the plan in the Plan pane
+specs:
+  - ['Entering', 'Needs your consent']
+  - ['Output', 'A plan file, shown to you for approval']
+  - ['After approval', 'Independent steps may be offered as parallel sessions']
+---
+import Demo from '../../../components/Demo.astro';
+
+<Demo>
+<div class="m-card">
+  <div class="m-kicker">Plan</div>
+  <ol class="m-gap">
+    <li>Move catalog into a Next.js repo</li>
+    <li>Add live screenshots per component</li>
+    <li>Deploy preview to Vercel</li>
+  </ol>
+  <div class="m-row"><button class="m-btn primary" type="button">Approve plan</button><button class="m-btn" type="button">Keep planning</button></div>
+</div>
+</Demo>
